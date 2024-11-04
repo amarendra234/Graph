@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+          queue<pair<string,int>>q;
+          q.push({startGene,0});
+          
+          string temp="ACGT";
+          unordered_map<string,int>umap;
+          for(auto nbr:bank){
+            umap[nbr]++;
+          }
+          unordered_map<string,bool>vis;
+          vis[startGene]=true;
+          while(q.size()>0){
+            string s=q.front().first;
+            int distance=q.front().second;
+            q.pop();
+            if(s==endGene){
+                return distance;
+            }
+              for(int i=0;i<temp.length();i++){
+                  for(int j=0;j<s.length();j++){
+                     if(s[j]!=temp[i]){
+                       string new_word=s.substr(0,j)+temp[i]+s.substr(j+1);
+                       if(umap.find(new_word)!=umap.end() and vis.find(new_word)==vis.end()){
+                            q.push({new_word,distance+1});
+                            vis[new_word]=true;
+                       }
+                     }
+                  }
+              }
+          }
+          return -1;
+    }
+};
