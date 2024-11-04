@@ -1,0 +1,42 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+class Solution {
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool Dfs(vector<vector<int>>& adj,int parent,bool vis[],int src){
+          vis[src]=true;
+          for(auto nbr:adj[src]){
+              if(!vis[nbr]){
+                  bool check=Dfs(adj,src,vis,nbr);
+                  if(check){
+                      return true;
+                  }
+              }else if(vis[nbr]==true and nbr!=parent){
+                  return true;
+              }
+          }
+          return false;
+    }
+    bool isCycle(vector<vector<int>>& adj) {
+        // Code here
+        int n=adj.size();
+        bool visited[n+1];
+        for(int i=0;i<=n;i++){
+            visited[i]=false;
+        }
+        bool ans=false;
+        for(int i=0;i<n;i++){
+            if(!visited[i]){
+                ans=Dfs(adj,-1,visited,i);
+                if(ans){
+                    return true;
+                }
+            }
+        }
+        return ans;
+    }
+};
