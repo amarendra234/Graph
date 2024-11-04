@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        // map check for vistied
+       // unordered_map<string,bool>vis;
+       unordered_set<string>vis;
+        // check word present or not
+         unordered_set<string>umap;
+        for(auto nbr:wordList){
+            umap.insert(nbr);
+        }
+        //string temp="abcdefghijklmnopqrstuvwxyz";
+        // queue along with distance
+        queue<pair<string,int>>q;
+        q.push({beginWord,0});
+        vis.insert(beginWord);
+        while(!q.empty()){
+            string s=q.front().first;
+            int dis=q.front().second;
+            q.pop();
+            if(s==endWord){
+                return dis+1;
+            }
+            for(int i=0;i<26;i++){
+                for(int j=0;j<s.length();j++){
+                    char ch='a'+i;
+                    if(ch!=s[j]){
+                    string new_word=s.substr(0,j)+ch+s.substr(j+1);
+                    if(umap.find(new_word)!=umap.end() and vis.find(new_word)==vis.end()){
+                        q.push({new_word,dis+1});
+                        vis.insert(new_word);
+                    }
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+};
