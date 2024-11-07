@@ -1,0 +1,38 @@
+
+bool check_cycle(int src,bool visited[],bool current_recursion[],vector<int>adj[]){
+    visited[src]=true;
+    current_recursion[src]=true;
+    for(auto nbr:adj[src]){
+      if(!visited[nbr]){
+        bool check=check_cycle(nbr, visited, current_recursion,adj);
+        if(check){
+          return true;
+        }
+      }
+      else if(current_recursion[nbr]==true){
+          return true;
+      }
+    }
+    current_recursion[src]=false;
+    return false;
+}
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+     vector<int>adj[n+1];
+     for(int i=0;i<edges.size();i++){
+       int u=edges[i].first;
+       int v=edges[i].second;
+       adj[u].push_back(v);
+     }
+     bool visited[n+1];
+     bool current_recursion[n+1];
+     for(int i=1;i<=n;i++){
+       visited[i]=false;
+       current_recursion[i]=false;
+     }
+     for(int i=1;i<=n;i++){
+       if(!visited[i] and check_cycle(i,visited,current_recursion,adj)){
+           return true;
+       }
+     }
+     return false;
+}
