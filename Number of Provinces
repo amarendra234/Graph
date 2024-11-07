@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int n=isConnected.size();
+        vector<int>adj[n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i!=j and isConnected[i][j]==1){
+                    adj[i].push_back(j);
+                    adj[j].push_back(i);
+                }
+            }
+        }
+        bool vis[n];
+        for(int i=0;i<n;i++){
+            vis[i]=false;
+        }
+        int ans=0;
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                ans++;
+                vis[i]=true;
+                queue<int>q;
+                q.push(i);
+                while(q.size()>0){
+                    int ele=q.front();q.pop();
+                    for(auto nbr:adj[ele]){
+                        if(!vis[nbr]){
+                            q.push(nbr);
+                            vis[nbr]=true;
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
