@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    // Function to return list containing vertices in Topological order.
+    vector<int> topologicalSort(vector<vector<int>>& adj) {
+        // Your code here
+        // topo sort using bfs
+        int v=adj.size();
+        int inorder[v];
+        bool vis[v];
+        vector<int>ans;
+        vector<int>adju[v];
+        for(int i=0;i<v;i++){
+            vis[i]=false;
+            inorder[i]=0;
+        }
+        for(int i=0;i<v;i++){
+            for(auto nbr:adj[i]){
+                inorder[nbr]++;
+            }
+        }
+        queue<int>q;
+        for(int i=0;i<v;i++){
+            //cout<<inorder[i]<<" ";
+            if(inorder[i]==0){
+                q.push(i);
+            }
+        }
+       
+        while(q.size()>0){
+            int ele=q.front();
+            q.pop();
+            ans.push_back(ele);
+            for(auto nbr:adj[ele]){
+                if(!vis[nbr]){
+                     inorder[nbr]--;
+                     if(inorder[nbr]==0){
+                         q.push(nbr);
+                     }
+                }
+            }
+        }
+        return ans;
+    }
+};
