@@ -1,0 +1,45 @@
+class Solution {
+public:
+    bool dfs(vector<int>adj[],int src,bool vis[],bool curr[]){
+        vis[src]=true;
+        curr[src]=true;
+        for(auto nbr:adj[src]){
+            if(!vis[nbr]){
+                bool ans=dfs(adj,nbr,vis,curr);
+                if(ans){
+                    return true;
+                }
+            }else if(curr[nbr]==true){
+                return true;
+            }
+        }
+        curr[src]=false;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
+        // if cycle present then we cant complete course
+        // otherwise we can compltet
+        // so logic is check directed graph contain cycle or not
+        bool vis[numCourses];
+        bool current_recursion[numCourses];
+        for(int i=0;i<numCourses;i++){
+            vis[i]=false;
+            current_recursion[i]=false;
+        }
+        vector<int>adj[numCourses];
+        for(int i=0;i<prerequisites.size();i++){
+            int u=prerequisites[i][0];
+            int v=prerequisites[i][1];
+            adj[u].push_back(v);
+        }
+        for(int i=0;i<numCourses;i++){
+            if(!vis[i]){
+                bool check=dfs(adj,i,vis,current_recursion);
+                if(check){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
