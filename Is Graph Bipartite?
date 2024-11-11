@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool dfs(vector<int> adj[],int src, vector<int>&color,int curr_color){
+        color[src]=curr_color;
+        for(auto nbr:adj[src]){
+            if(color[nbr]==-1){
+                bool check=dfs(adj,nbr,color,1-curr_color);
+                if(check){
+                    return true;
+                }
+            }else if(color[nbr]==color[src]){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isBipartite(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int>color(n,-1);
+        vector<int>adj[n];
+        for(int i=0;i<n;i++){
+            for(auto nbr:graph[i]){
+                adj[i].push_back(nbr);
+               // adj[nbr].push_back(i);
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(color[i]==-1){
+                bool check =dfs(adj,i,color,1);
+               if(check){
+                return false;
+               }
+            }
+        }
+        return true;
+    }
+};
