@@ -1,0 +1,33 @@
+#include <bits/stdc++.h> 
+vector<int> safeNodes(vector<vector<int>> &edges, int n, int e) {
+    // Write your code here.
+    vector<int>ans;
+    vector<int>adj[n];
+    vector<int>Indegree(n,0);
+    for(int i=0;i<edges.size();i++){
+        int u=edges[i][0];
+        int v=edges[i][1];
+        adj[v].push_back(u);
+        Indegree[u]++; //need to reverse need otherwise not able to travse node
+    }
+    queue<int>q;
+    for(int i=0;i<n;i++){
+        if(Indegree[i]==0){
+            q.push(i);
+        }
+    }
+    while(q.size()>0){
+        int node=q.front();
+        q.pop();
+        ans.push_back(node);
+        for(auto nbr:adj[node]){
+            Indegree[nbr]--;
+            if(Indegree[nbr]==0){
+                q.push(nbr);
+            }
+        }
+    }
+    sort(ans.begin(),ans.end());
+    return ans;
+
+}
