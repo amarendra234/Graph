@@ -1,0 +1,43 @@
+class Solution {
+public:
+    bool dfs(vector<int>adj[],int src,vector<bool>&vis,vector<bool>&curr_path){
+          vis[src]=true;
+          curr_path[src]=true;
+          for(auto nbr:adj[src]){
+            if(!vis[nbr]){
+                bool check=dfs(adj,nbr,vis,curr_path);
+                if(check){
+                    return true;
+                }
+            }else if(curr_path[nbr]==true){
+                 return true;
+            }
+          }
+          curr_path[src]=false;
+          return false;
+    }
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        int n=graph.size();
+        vector<int>adj[n];
+        for(int i=0;i<n;i++){
+            for(auto nbr:graph[i]){
+                adj[i].push_back(nbr);
+            }
+        }
+        vector<bool>vis(n,false);
+        vector<bool>curr_path(n,false);
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+                bool check=dfs(adj,i,vis,curr_path);
+            }
+        }
+        vector<int>ans;
+        for(int i=0;i<n;i++){
+            if(!curr_path[i]){
+                ans.push_back(i);
+            }
+        }
+        return ans;
+        
+    }
+};
