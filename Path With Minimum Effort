@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        int n=heights.size();
+        int m=heights[0].size();
+        vector<vector<int>>dist(n,vector<int>(m,INT_MAX));
+        dist[0][0]=0;
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>>pq;
+        pq.push({0,{0,0}});// {weight,x_axis,y_axis}
+        int x_axis[]={-1,1,0,0};
+        int y_axis[]={0,0,-1,1};
+        while(pq.size()>0){
+            int d=pq.top().first;
+            int x=pq.top().second.first;
+            int y=pq.top().second.second;
+            pq.pop();
+            for(int i=0;i<4;i++){
+                int lx=x+x_axis[i];
+                int ly=y+y_axis[i];
+                if(lx>=0 and lx<n and ly>=0 and ly<m){
+                    int diff=abs(heights[x][y]-heights[lx][ly]);
+                    int new_diff=max(diff,d);// effort is the maximum absolute difference in heights between two consecutive cells of the route.
+                    if((new_diff)<dist[lx][ly]){
+                        dist[lx][ly]=new_diff;
+                        pq.push({dist[lx][ly],{lx,ly}});
+                        
+                    }
+                }
+            }
+        }
+        return dist[n-1][m-1];
+    }
+};
