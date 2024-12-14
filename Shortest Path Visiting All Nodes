@@ -1,0 +1,43 @@
+class Solution {
+public:
+
+    int shortestPathLength(vector<vector<int>>& graph) {
+        int n=graph.size();
+        cout<<n<<endl;
+        vector<int>adj[n];
+        for(int i=0;i<n;i++){
+            for(auto nbr:graph[i]){
+                adj[i].push_back(nbr);
+               // adj[nbr].push_back(i);
+            }
+        }
+        queue<pair<int,pair<int,int>>>q;  // {node,dist,bitmask}
+        int target;
+        map<pair<int,int>,int>umap;
+        int i;
+        for(i=0;i<n;i++){
+          q.push({i,{0,1<<i}});
+          umap[{i,1<<i}]++;
+         
+        }
+        target=(1<<i)-1;
+        while(!q.empty()){
+            int node=q.front().first;
+            int d=q.front().second.first;
+            int mask=q.front().second.second;
+            q.pop();
+            if(mask==target){
+                return d;
+            }
+            for(auto nbr:adj[node]){
+                int new_mask=mask|(1<<nbr);
+                if(umap.find({nbr,new_mask})==umap.end()){
+                    q.push({nbr,{d+1,new_mask}});
+                    umap[{nbr,new_mask}]++;
+                }
+            }
+
+        }
+        return -1;
+    }
+};
