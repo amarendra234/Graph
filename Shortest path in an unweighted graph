@@ -1,0 +1,45 @@
+vector<int> shortestPath( vector<pair<int,int>> edges , int n , int m, int s , int t){
+	
+	// try with bfs first
+	vector<int>Path;
+    bool vis[n+1];
+	int path_dist[n+1];
+	for(int i=1;i<=n;i++){
+		vis[i]=false;
+		path_dist[i]=-1;
+	}
+    vector<int>adj[n+1];
+	for(int i=0;i<edges.size();i++){
+		int u=edges[i].first;
+		int v=edges[i].second;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+	queue<int>q;
+	q.push(s); // node and distance
+	vis[s]=true;
+	path_dist[s]=-1;
+	while(!q.empty()){
+		int node=q.front();
+		q.pop();
+		//cout<<node<<endl;
+		for(auto nbr:adj[node]){
+			if(vis[nbr]==false){
+				vis[nbr]=true;
+				q.push(nbr);
+				path_dist[nbr]=node;
+				//cout<<path_dist[nbr]<<endl;
+			}
+		}
+	}
+	// for(int i=1;i<=n;i++){
+	// 	cout<<path_dist[i]<<endl;
+	// }
+    while(t!=-1){
+     	Path.push_back(t);
+	 	t=path_dist[t];
+	 }
+     reverse(Path.begin(),Path.end());
+	return Path;
+	
+}
