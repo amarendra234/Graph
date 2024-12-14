@@ -1,0 +1,30 @@
+int minimumTimeTakingPath(vector<vector<int>> &heights)
+{
+    int n=heights.size();
+    int m=heights[0].size();
+    vector<vector<int>>dist(n,vector<int>(m,INT_MAX));
+    dist[0][0]=0;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
+    pq.push({0,0});
+    int x[]={-1,1,0,0};
+    int y[]={0,0,-1,1};
+    while(!pq.empty()){
+        int d=pq.top().first;
+        int node=pq.top().second;
+        pq.pop();
+        for(int i=0;i<4;i++){
+            int lx=x[i]+(node/m);
+            int ly=y[i]+(node%m);
+            if(lx>=0 and lx<n and ly>=0 and ly<m){
+                int diff=abs(heights[lx][ly]-heights[node/m][node%m]);
+                int new_max_diff=max(diff,d);
+                int index=(lx*m)+ly;
+                if(new_max_diff<dist[lx][ly]){
+                     pq.push({new_max_diff,index});
+                     dist[lx][ly]=new_max_diff;
+                }
+            }
+        }
+    }
+    return dist[n-1][m-1];
+}
