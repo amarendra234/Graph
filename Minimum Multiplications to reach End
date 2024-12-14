@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    int minimumMultiplications(vector<int>& arr, int start, int end) {
+        // code here
+        queue<pair<int,int>>q;
+        q.push({start,0});
+        unordered_map<int,int>umap;
+        umap[start]++;
+        while(!q.empty()){
+            int val=q.front().first;
+            int step=q.front().second;
+            q.pop();
+            if(val==end){
+                return step;
+            }
+            for(int i=0;i<arr.size();i++){
+                int new_val=((val%100000)*(arr[i]%100000))%100000;
+                if(umap.find(new_val)==umap.end()){
+                    q.push({new_val,step+1});
+                    umap[new_val]++;
+                }
+                
+            }
+           
+        }
+        
+        
+        return -1;
+    }
+};
