@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int count;
+    int n;
+    void dfs(vector<vector<int>>&rooms,int src,vector<bool>&vis){
+        if(vis[src]==true){
+            return;
+        }
+        vis[src]=true;
+        count++;
+        if(count==n){
+            return;
+        }
+        for(auto nbr:rooms[src]){
+        
+                dfs(rooms,nbr,vis);
+           
+           
+        }
+    }
+    bool canVisitAllRooms(vector<vector<int>>& rooms) {
+         count=0;
+          n=rooms.size();
+          vector<bool>vis(n,false);
+         dfs(rooms,0,vis);
+         return count==n;
+    }
+};
